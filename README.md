@@ -38,7 +38,7 @@ The pre-words we set is:
 不愧是家族中种子级别的人物
 ```
 
-The next 200 words generated from *斗破苍穹* based on 3-grams is:
+The next 200 words generated from *《斗破苍穹》* based on **3-grams** is:
 ```
 不愧是家族中种子级别的人物，她似乎便是从未见过萧炎白白吃亏过，即便如今已经晋入五星斗皇，
 那是一种凌驾这片天地之上的气息巨蟒逐渐消散，最后一卷被能量层所包裹的人影，萧炎也只得停下介绍，
