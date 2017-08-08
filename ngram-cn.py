@@ -91,7 +91,3 @@ if __name__ == '__main__':
     vab = count_gram(f, grams)
     pre = "不愧是家族中种子级别的人物"
     generate_word(vab, pre, grams, length=200)
-
-
-
-

@@ -109,6 +109,7 @@ def generate_word(voca_prob_dict, pre, grams, word_length):
 
 
 if __name__ == '__main__':
+	# Game Of Thrones corpus
     print "********"
     print "Generate text with 'Game Of Thrones 01.txt'."
     print "grams = 3"
@@ -121,6 +122,7 @@ if __name__ == '__main__':
     generate_word(vab, pre1, grams, word_length)
     print "********\n"
 
+	# Shakespeare corpus
     print "Generate text with 'shakespeare.txt'."
     f2 = "novel/shakespeare.txt"
     print "grams = 4"
