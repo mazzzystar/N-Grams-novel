@@ -5,7 +5,7 @@ This project is a tiny implementation of [slp4:N-grams](https://lagunita.stanfor
 # About the project
 There are 2 files in project: one is for English version of novel generation, the other is for Chinese. I used some simple
 ways when constructing my *N-Grams* model, so for further research you may need:
-* a better trick of smoothing/discount like.
+* a better trick of smoothing/discount.
 * use *back-off* method for high-dimension of N.
 * validation set, test set. and use *perplexity* to measure your model.
 * process *unknown words*.
