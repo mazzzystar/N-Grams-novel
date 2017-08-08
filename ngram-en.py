@@ -3,6 +3,7 @@
 N-Grams for Shakespeare corpus.
 """
 import random
+import operator
 
 
 def text_clean(text_file):
@@ -86,16 +87,20 @@ def generate_word(voca_prob_dict, pre, grams, word_length):
     for i in xrange(word_length):
         str_len = len(pre_list)
         back_voca = ' '.join(pre_list[str_len-grams+1:])
-        predict_voca_list = []
+        predict_voca_dict = {}
         for item in voca_prob_dict:
             item_list = item.split()
             back = ' '.join(item_list[:-1])
             if back_voca == back:
-                predict_voca_list.append(item_list[-1])
+                predict_voca_dict[item_list[-1]] = voca_prob_dict[item]
 
-        if len(predict_voca_list):
-            next_word = random.choice(predict_voca_list)
-            pre_list.append(next_word)
+        if len(predict_voca_dict):
+            sorted_next_word = sorted(predict_voca_dict.items(), key=operator.itemgetter(1))
+            if len(sorted_next_word) >= 3:
+                next_word = random.choice(sorted_next_word[-3:])
+            else:
+                next_word = random.choice(sorted_next_word)
+            pre_list.append(next_word[0])
         else:
             break
 
