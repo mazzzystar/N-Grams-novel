@@ -15,7 +15,7 @@ ways when constructing my *N-Grams* model, so for further research you may need:
 python ngram-en.py
 ```
 ## example
-The pre-words we set is:
+The pre-words we set:
 ```
 There was an edge to this
 ```
@@ -33,7 +33,7 @@ pip install jieba
 python ngram-cn.py
 ```
 ## Generation sample
-The pre-words we set is:
+The pre-words we set:
 ```
 不愧是家族中种子级别的人物
 ```
