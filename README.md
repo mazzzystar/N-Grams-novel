@@ -1,6 +1,6 @@
 N-Grams for novel generation.
 =============================
-This project is a tiny implementation of [slp4:N-grams](https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf).I wrote some chinese notes for that article:[N-Grams模型初探](http://ringo.pub/2017/08/05/n-gram/).
+This project is a tiny implementation of [slp4:N-grams](https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf).I wrote some chinese notes for that article:[N-Grams模型初探](http://ringo.pub/2017/08/05/n-grams/).
 
 # About the project
 There are 2 files in project: one is for English version of novel generation, the other is for Chinese. I used some simple
