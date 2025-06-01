@@ -1,93 +1,58 @@
 # coding:utf-8
 """
-N-Grams for Chines corpus.
+N-Grams for Chinese corpus.
 """
 import random
 import operator
 import jieba
 
-
-def text_clean(text):
-    all_text = ""
-    voca_set = set()
-    with open(text, 'r') as f:
+def text_clean(file):
+    all_text, voca_set = "", set()
+    with open(file, 'r') as f:
         for line in f:
-            words_list = jieba.lcut(line.lower())
-            voca_set.update(words_list)
-            line = "@".join(words_list)
-            all_text += line
+            words = jieba.lcut(line.lower())
+            voca_set.update(words)
+            all_text += "@".join(words)
     return all_text, len(voca_set)
 
-
 def ngram(text, grams):
-    model = []
     text_list = text.split("@")
-    count = 0
-    for token in text_list[:len(text_list) - grams+1]:
-        model.append('@'.join(text_list[count:count + grams]))
-        count += 1
-    return model
-
+    return ['@'.join(text_list[i:i+grams]) for i in range(len(text_list) - grams + 1)]
 
 def count_gram(file, grams):
     text, voca_len = text_clean(file)
+    model, lower_model = ngram(text, grams), ngram(text, grams - 1)
 
-    model = ngram(text, grams)
-    lower_model = ngram(text, grams-1)
-
-    mdict = {}
+    mdict, lower_dict = {}, {}
     for item in model:
-        if item not in mdict:
-            mdict[item] = 0
-        mdict[item] += 1
-
-    lower_dict = {}
+        mdict[item] = mdict.get(item, 0) + 1
     for item in lower_model:
-        if item not in lower_dict:
-            lower_dict[item] = 0
-        lower_dict[item] += 1
+        lower_dict[item] = lower_dict.get(item, 0) + 1
 
-    # add one smooth
     voca_prob_dict = {}
     for item in model:
-        item_list = item.split("@")
-        back_words = "@".join(item_list[:-1])
-        prob = float(mdict[item] + 1) / (lower_dict[back_words] + voca_len)
+        back = "@".join(item.split("@")[:-1])
+        prob = float(mdict[item] + 1) / (lower_dict[back] + voca_len)
         voca_prob_dict[item] = prob
 
     return voca_prob_dict
 
-
 def generate_word(voca_prob_dict, pre, grams, length):
     print "The pre is: " + pre + '\n'
     pre_list = jieba.lcut(pre)
-    for i in xrange(length):
-        str_len = len(pre_list)
-        back_voca = ''.join(pre_list[str_len-grams+1:])
-        predict_voca_dict = {}
-        for item in voca_prob_dict:
-            item_list = item.split("@")
-            back = ''.join(item_list[:-1])
-            if back_voca == back:
-                predict_voca_dict[item_list[-1]] = voca_prob_dict[item]
-
-        if len(predict_voca_dict):
-            sorted_next_word = sorted(predict_voca_dict.items(), key=operator.itemgetter(1))
-            if len(sorted_next_word) >= 3:
-                next_word = random.choice(sorted_next_word[-3:])
-            else:
-                next_word = random.choice(sorted_next_word)
-            pre_list.append(next_word[0])
+    for _ in range(length):
+        back = ''.join(pre_list[-grams+1:])
+        candidates = {item.split("@")[-1]: prob for item, prob in voca_prob_dict.items()
+                      if ''.join(item.split("@")[:-1]) == back}
+        if candidates:
+            sorted_next = sorted(candidates.items(), key=operator.itemgetter(1))
+            next_word = random.choice(sorted_next[-3:] if len(sorted_next) >= 3 else sorted_next)[0]
+            pre_list.append(next_word)
         else:
             break
-
-    s = ''.join(pre_list)
-    print s
-
+    print ''.join(pre_list)
 
 if __name__ == '__main__':
-    f = "novel/dpcq.txt"
-    grams = 4
-    vab = count_gram(f, grams)
+    f, grams = "novel/dpcq.txt", 4
     pre = "不愧是家族中种子级别的人物"
-    generate_word(vab, pre, grams, length=200)
+    generate_word(count_gram(f, grams), pre, grams, length=200)
